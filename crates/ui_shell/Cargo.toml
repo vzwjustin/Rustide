@@ -1,0 +1,27 @@
+[package]
+name = "ui_shell"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "rustide"
+path = "src/main.rs"
+
+[dependencies]
+gpui.workspace = true
+editor_core = { path = "../editor_core" }
+languages = { path = "../languages" }
+lsp_bridge = { path = "../lsp_bridge" }
+agents = { path = "../agents" }
+security = { path = "../security" }
+tasks = { path = "../tasks" }
+gitx = { path = "../gitx" }
+
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+parking_lot.workspace = true
+fuzzy-matcher.workspace = true
+walkdir.workspace = true

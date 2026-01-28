@@ -1,0 +1,50 @@
+# Build artifacts
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# IDE/Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Rust analyzer
+rust-project.json
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Test coverage
+*.profraw
+*.profdata
+coverage/
+lcov.info
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Language server caches
+.lsp/
+
+# Tree-sitter compiled grammars (keep source, not compiled)
+*.so
+*.dylib
+*.dll
+
+# User-specific configuration
+.user/

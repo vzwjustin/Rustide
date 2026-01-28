@@ -1,0 +1,18 @@
+[package]
+name = "dap_bridge"
+version.workspace = true
+edition.workspace = true
+description = "Debug Adapter Protocol client for Rust IDE"
+
+[dependencies]
+dap = "0.4.1-alpha1"
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+parking_lot.workspace = true
+
+[dev-dependencies]
+tokio-test = "0.4"
