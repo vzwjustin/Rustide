@@ -9,10 +9,10 @@ See: .planning/PROJECT.md (updated 2026-01-27)
 
 ## Current Position
 
-Phase: 1 of 8 (Foundation Validation)
-Plan: 5 of 5 in current phase
-Status: Phase complete
-Last activity: 2026-01-28 - Completed 01-05-PLAN.md (Integration Testing)
+Phase: 2 of 8 (Core Text Editing)
+Plan: 1 of 6 in current phase
+Status: Plan 1 implemented (verification pending)
+Last activity: 2026-01-28 - Implemented 02-01-PLAN.md (Text input + cursor)
 
 Progress: [██████░░░░] 20%
 
@@ -67,16 +67,21 @@ Recent decisions affecting current work:
 - [01-04]: overflow_hidden required for uniform_list container
 - [01-05]: Phase 1 complete - all four success criteria verified by human tester
 - [01-05]: Integration test pattern: graded file sizes (small/medium/large/stress)
+- [02-01]: Keydown text input uses keystroke.key_char; IME handling deferred
 
 ### Pending Todos
 
-None yet.
+- Re-run `cargo check -p ui_shell` once OpenSSL dev libs are available
+- Complete manual verification for 02-01 (typing + cursor blink)
+- Start 02-02 (keyboard navigation)
 
 ### Blockers/Concerns
 
 **From Research:**
 - GPUI 0.2 IME support needs validation (affects CJK text input)
 - Tree-sitter grammar version conflicts (TOML/Markdown disabled due to cc crate)
+**From Execution:**
+- OpenSSL dev libraries missing on Linux host (blocks `cargo check`)
 
 **Critical Pitfalls to Address Early:**
 - P12: No virtual scrolling - causes UI freeze (Phase 1) - **RESOLVED in 01-04**
@@ -88,8 +93,8 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-28
-Stopped at: Completed 01-05-PLAN.md - Phase 1 Complete
-Resume file: None
+Stopped at: Implemented 02-01 (verification pending)
+Resume file: .planning/phases/02-core-text-editing/02-01-PLAN.md
 
 ---
 *State initialized: 2026-01-27*
