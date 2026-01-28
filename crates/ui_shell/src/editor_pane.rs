@@ -3,14 +3,17 @@
 //! Manages multiple open files in a tabbed interface.
 
 use gpui::{
-    div, prelude::*, px, App, Entity, FocusHandle, Focusable,
+    div, prelude::*, px, uniform_list, App, Entity, FocusHandle, Focusable,
     InteractiveElement, IntoElement, ParentElement, SharedString,
-    Styled, Window,
+    Styled, UniformListScrollHandle, Window,
 };
 use std::path::PathBuf;
 
 use crate::theme::current_theme;
 use editor_core::Document;
+
+/// Uniform line height for virtual scrolling (required by uniform_list)
+const LINE_HEIGHT: f32 = 20.0;
 
 /// Represents an open editor tab
 #[derive(Clone)]
@@ -53,6 +56,8 @@ pub struct EditorPane {
     focus_handle: FocusHandle,
     tabs: Vec<EditorTab>,
     active_tab: Option<usize>,
+    /// Scroll handle for virtual scrolling (tracks scroll position)
+    scroll_handle: UniformListScrollHandle,
 }
 
 impl EditorPane {
@@ -62,6 +67,7 @@ impl EditorPane {
             focus_handle: cx.focus_handle(),
             tabs: Vec::new(),
             active_tab: None,
+            scroll_handle: UniformListScrollHandle::new(),
         }
     }
 
