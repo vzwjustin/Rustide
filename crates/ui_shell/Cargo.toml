@@ -25,3 +25,4 @@ tracing-subscriber.workspace = true
 parking_lot.workspace = true
 fuzzy-matcher.workspace = true
 walkdir.workspace = true
+tokio.workspace = true
