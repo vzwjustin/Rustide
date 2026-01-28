@@ -105,6 +105,7 @@ pub struct UiColors {
     pub tab_inactive: Hsla,
     pub icon: Hsla,
     pub icon_muted: Hsla,
+    pub cursor: Hsla,
 }
 
 #[derive(Clone, Debug)]
@@ -204,6 +205,7 @@ impl Theme {
                 tab_inactive: hsla(220.0 / 360.0, 0.13, 0.10, 1.0),
                 icon: hsla(0.0, 0.0, 0.75, 1.0),
                 icon_muted: hsla(0.0, 0.0, 0.50, 1.0),
+                cursor: hsla(215.0 / 360.0, 0.80, 0.65, 1.0),
             },
             fonts: FontSettings {
                 ui_family: SharedString::from("Inter"),
