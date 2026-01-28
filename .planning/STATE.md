@@ -10,30 +10,39 @@ See: .planning/PROJECT.md (updated 2026-01-27)
 ## Current Position
 
 Phase: 1 of 8 (Foundation Validation)
-Plan: 0 of 5 in current phase
-Status: Ready to plan
-Last activity: 2026-01-27 - Roadmap created with 8 phases mapping 25 requirements
+Plan: 1 of 5 in current phase
+Status: In progress
+Last activity: 2026-01-28 - Completed 01-01-PLAN.md (Compile and Launch Validation)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 4%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: -
-- Total execution time: 0 hours
+- Total plans completed: 1
+- Average duration: 3 min
+- Total execution time: 0.06 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-foundation-validation | 1 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: -
-- Trend: -
+- Last 5 plans: 01-01 (3 min)
+- Trend: Baseline established
 
 *Updated after each plan completion*
+
+## Baseline Metrics (Established 01-01)
+
+| Metric | Value | Target |
+|--------|-------|--------|
+| Binary size | 5.5 MB | Monitor growth |
+| Memory (idle) | ~74 MB | <100 MB |
+| Startup time | <1 sec | Maintain |
+| Build time (release, cached) | ~40 sec | - |
 
 ## Accumulated Context
 
@@ -45,6 +54,8 @@ Recent decisions affecting current work:
 - [Roadmap]: 8-phase vertical integration approach derived from 25 v1 requirements
 - [Roadmap]: Phase 1 prioritizes critical pitfalls P5 (blocking I/O) and P12 (no virtual scrolling)
 - [Roadmap]: LSP split into Foundation (Phase 6) and Interaction (Phase 7) for manageable scope
+- [01-01]: Binary name is 'rustide' not 'ui_shell' per Cargo.toml [[bin]] config
+- [01-01]: Metal toolchain requires explicit download on fresh macOS systems
 
 ### Pending Todos
 
@@ -66,9 +77,10 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-27
-Stopped at: Roadmap created, ready to plan Phase 1
+Last session: 2026-01-28
+Stopped at: Completed 01-01-PLAN.md
 Resume file: None
 
 ---
 *State initialized: 2026-01-27*
+*Last updated: 2026-01-28*
