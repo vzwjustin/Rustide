@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-01-27)
 ## Current Position
 
 Phase: 1 of 8 (Foundation Validation)
-Plan: 2 of 5 in current phase
+Plan: 3 of 5 in current phase
 Status: In progress
-Last activity: 2026-01-28 - Completed 01-02-PLAN.md (Document Entity Wiring)
+Last activity: 2026-01-28 - Completed 01-03-PLAN.md (Async File Loading)
 
-Progress: [██░░░░░░░░] 8%
+Progress: [███░░░░░░░] 12%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 3 min
-- Total execution time: 0.10 hours
+- Total plans completed: 3
+- Average duration: 4 min
+- Total execution time: 0.20 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation-validation | 2 | 6 min | 3 min |
+| 01-foundation-validation | 3 | 12 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3 min), 01-02 (3 min)
-- Trend: Consistent ~3 min per plan
+- Last 5 plans: 01-01 (3 min), 01-02 (3 min), 01-03 (6 min)
+- Trend: Consistent execution
 
 *Updated after each plan completion*
 
@@ -59,6 +59,9 @@ Recent decisions affecting current work:
 - [01-02]: Synchronous loading preserved in open_file - async deferred to 01-03
 - [01-02]: Error fallback to empty Document::new() on file open failure
 - [01-02]: Entity<Document> pattern established for GPUI reactive documents
+- [01-03]: cx.spawn async fn syntax for GPUI type inference
+- [01-03]: tokio::fs for async file I/O on background_executor
+- [01-03]: WeakEntity pattern for safe async entity updates
 
 ### Pending Todos
 
@@ -72,8 +75,8 @@ None yet.
 - Tree-sitter grammar version conflicts (TOML/Markdown disabled due to cc crate)
 
 **Critical Pitfalls to Address Early:**
-- P12: No virtual scrolling - causes UI freeze (Phase 1)
-- P5: Blocking main thread on file I/O (Phase 1) - **01-02 prepared Entity foundation, 01-03 adds async**
+- P12: No virtual scrolling - causes UI freeze (Phase 1) - **01-04 in progress**
+- P5: Blocking main thread on file I/O (Phase 1) - **RESOLVED in 01-03**
 - P1: Unhandled LSP server requests (Phase 6)
 - P2: No request timeouts for LSP (Phase 6)
 - P4: LSP document sync drift (Phase 6)
@@ -81,7 +84,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-28
-Stopped at: Completed 01-02-PLAN.md
+Stopped at: Completed 01-03-PLAN.md
 Resume file: None
 
 ---
