@@ -188,6 +188,19 @@ impl EditorPane {
         let theme = current_theme();
 
         if let Some(tab) = self.active_tab() {
+            // Show loading indicator while file is being loaded asynchronously
+            if tab.is_loading {
+                return div()
+                    .id("loading")
+                    .flex_1()
+                    .flex()
+                    .items_center()
+                    .justify_center()
+                    .bg(theme.background.editor)
+                    .text_color(theme.text.secondary)
+                    .child("Loading...");
+            }
+
             // Read line count from Document entity
             let line_count = tab.document.read(cx).line_count();
             let document = tab.document.clone();
