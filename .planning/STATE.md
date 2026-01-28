@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-01-27)
 ## Current Position
 
 Phase: 1 of 8 (Foundation Validation)
-Plan: 1 of 5 in current phase
+Plan: 2 of 5 in current phase
 Status: In progress
-Last activity: 2026-01-28 - Completed 01-01-PLAN.md (Compile and Launch Validation)
+Last activity: 2026-01-28 - Completed 01-02-PLAN.md (Document Entity Wiring)
 
-Progress: [█░░░░░░░░░] 4%
+Progress: [██░░░░░░░░] 8%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
+- Total plans completed: 2
 - Average duration: 3 min
-- Total execution time: 0.06 hours
+- Total execution time: 0.10 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation-validation | 1 | 3 min | 3 min |
+| 01-foundation-validation | 2 | 6 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3 min)
-- Trend: Baseline established
+- Last 5 plans: 01-01 (3 min), 01-02 (3 min)
+- Trend: Consistent ~3 min per plan
 
 *Updated after each plan completion*
 
@@ -56,6 +56,9 @@ Recent decisions affecting current work:
 - [Roadmap]: LSP split into Foundation (Phase 6) and Interaction (Phase 7) for manageable scope
 - [01-01]: Binary name is 'rustide' not 'ui_shell' per Cargo.toml [[bin]] config
 - [01-01]: Metal toolchain requires explicit download on fresh macOS systems
+- [01-02]: Synchronous loading preserved in open_file - async deferred to 01-03
+- [01-02]: Error fallback to empty Document::new() on file open failure
+- [01-02]: Entity<Document> pattern established for GPUI reactive documents
 
 ### Pending Todos
 
@@ -70,7 +73,7 @@ None yet.
 
 **Critical Pitfalls to Address Early:**
 - P12: No virtual scrolling - causes UI freeze (Phase 1)
-- P5: Blocking main thread on file I/O (Phase 1)
+- P5: Blocking main thread on file I/O (Phase 1) - **01-02 prepared Entity foundation, 01-03 adds async**
 - P1: Unhandled LSP server requests (Phase 6)
 - P2: No request timeouts for LSP (Phase 6)
 - P4: LSP document sync drift (Phase 6)
@@ -78,7 +81,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-28
-Stopped at: Completed 01-01-PLAN.md
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
 
 ---
