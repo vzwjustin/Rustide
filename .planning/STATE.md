@@ -10,27 +10,27 @@ See: .planning/PROJECT.md (updated 2026-01-27)
 ## Current Position
 
 Phase: 1 of 8 (Foundation Validation)
-Plan: 3 of 5 in current phase
+Plan: 4 of 5 in current phase
 Status: In progress
-Last activity: 2026-01-28 - Completed 01-03-PLAN.md (Async File Loading)
+Last activity: 2026-01-28 - Completed 01-04-PLAN.md (Virtual Scrolling)
 
-Progress: [███░░░░░░░] 12%
+Progress: [████░░░░░░] 16%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 4 min
-- Total execution time: 0.20 hours
+- Total plans completed: 4
+- Average duration: 5 min
+- Total execution time: 0.32 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation-validation | 3 | 12 min | 4 min |
+| 01-foundation-validation | 4 | 19 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3 min), 01-02 (3 min), 01-03 (6 min)
+- Last 5 plans: 01-01 (3 min), 01-02 (3 min), 01-03 (6 min), 01-04 (7 min)
 - Trend: Consistent execution
 
 *Updated after each plan completion*
@@ -40,9 +40,9 @@ Progress: [███░░░░░░░] 12%
 | Metric | Value | Target |
 |--------|-------|--------|
 | Binary size | 5.5 MB | Monitor growth |
-| Memory (idle) | ~74 MB | <100 MB |
+| Memory (idle) | ~65 MB | <100 MB |
 | Startup time | <1 sec | Maintain |
-| Build time (release, cached) | ~40 sec | - |
+| Build time (release, cached) | ~14 sec | - |
 
 ## Accumulated Context
 
@@ -62,6 +62,9 @@ Recent decisions affecting current work:
 - [01-03]: cx.spawn async fn syntax for GPUI type inference
 - [01-03]: tokio::fs for async file I/O on background_executor
 - [01-03]: WeakEntity pattern for safe async entity updates
+- [01-04]: LINE_HEIGHT=20.0px for uniform line sizing
+- [01-04]: uniform_list pattern for O(visible) virtual scrolling
+- [01-04]: overflow_hidden required for uniform_list container
 
 ### Pending Todos
 
@@ -71,11 +74,10 @@ None yet.
 
 **From Research:**
 - GPUI 0.2 IME support needs validation (affects CJK text input)
-- Virtual scrolling with GPUI layout needs confirmation (may need custom scroll container)
 - Tree-sitter grammar version conflicts (TOML/Markdown disabled due to cc crate)
 
 **Critical Pitfalls to Address Early:**
-- P12: No virtual scrolling - causes UI freeze (Phase 1) - **01-04 in progress**
+- P12: No virtual scrolling - causes UI freeze (Phase 1) - **RESOLVED in 01-04**
 - P5: Blocking main thread on file I/O (Phase 1) - **RESOLVED in 01-03**
 - P1: Unhandled LSP server requests (Phase 6)
 - P2: No request timeouts for LSP (Phase 6)
@@ -84,7 +86,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-28
-Stopped at: Completed 01-03-PLAN.md
+Stopped at: Completed 01-04-PLAN.md
 Resume file: None
 
 ---
