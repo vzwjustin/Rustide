@@ -3,16 +3,17 @@
 //! Manages multiple open files in a tabbed interface.
 
 use gpui::{
-    div, prelude::*, px, App, FocusHandle, Focusable,
+    div, prelude::*, px, App, Entity, FocusHandle, Focusable,
     InteractiveElement, IntoElement, ParentElement, SharedString,
     Styled, Window,
 };
 use std::path::PathBuf;
 
 use crate::theme::current_theme;
+use editor_core::Document;
 
 /// Represents an open editor tab
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct EditorTab {
     /// File path
     pub path: PathBuf,
@@ -20,15 +21,17 @@ pub struct EditorTab {
     pub name: String,
     /// Whether the file has unsaved changes
     pub is_modified: bool,
-    /// File content
-    pub content: String,
+    /// Document entity (GPUI reactive)
+    pub document: Entity<Document>,
+    /// Whether the document is currently loading
+    pub is_loading: bool,
     /// Cursor position (line, column)
     pub cursor: (usize, usize),
 }
 
 impl EditorTab {
-    /// Create a new editor tab
-    pub fn new(path: PathBuf) -> Self {
+    /// Create a new editor tab with a document entity
+    pub fn new(path: PathBuf, document: Entity<Document>) -> Self {
         let name = path
             .file_name()
             .map(|n| n.to_string_lossy().to_string())
@@ -38,15 +41,10 @@ impl EditorTab {
             path,
             name,
             is_modified: false,
-            content: String::new(),
+            document,
+            is_loading: false,
             cursor: (1, 1),
         }
-    }
-
-    /// Set the content
-    pub fn with_content(mut self, content: String) -> Self {
-        self.content = content;
-        self
     }
 }
 
@@ -76,10 +74,19 @@ impl EditorPane {
             return;
         }
 
-        // Load file content
-        let content = std::fs::read_to_string(&path).unwrap_or_default();
-        let tab = EditorTab::new(path).with_content(content);
+        // Create document entity with synchronous load
+        // Note: Async loading will be added in plan 01-03
+        let document = cx.new(|_| {
+            match Document::open(&path) {
+                Ok(doc) => doc,
+                Err(e) => {
+                    tracing::error!("Failed to open file {:?}: {}", path, e);
+                    Document::new() // Empty document on error
+                }
+            }
+        });
 
+        let tab = EditorTab::new(path.clone(), document);
         self.tabs.push(tab);
         self.active_tab = Some(self.tabs.len() - 1);
         cx.notify();
@@ -177,11 +184,13 @@ impl EditorPane {
     }
 
     /// Render the editor content area
-    fn render_editor_content(&self, _cx: &Context<Self>) -> impl IntoElement {
+    fn render_editor_content(&self, cx: &Context<Self>) -> impl IntoElement {
         let theme = current_theme();
 
         if let Some(tab) = self.active_tab() {
-            let lines: Vec<&str> = tab.content.lines().collect();
+            // Read line count from Document entity
+            let line_count = tab.document.read(cx).line_count();
+            let document = tab.document.clone();
 
             div()
                 .id("editor-content")
@@ -191,7 +200,13 @@ impl EditorPane {
                 .p(px(8.0))
                 .font_family(theme.fonts.mono_family.clone())
                 .text_size(px(theme.fonts.mono_size))
-                .children(lines.iter().enumerate().map(|(i, line)| {
+                .children((0..line_count).map(|i| {
+                    // Read each line from Document
+                    let line_text = document
+                        .read(cx)
+                        .line(i)
+                        .unwrap_or_default();
+
                     div()
                         .flex()
                         .child(
@@ -206,10 +221,10 @@ impl EditorPane {
                             div()
                                 .flex_1()
                                 .text_color(theme.text.primary)
-                                .child(if line.is_empty() {
+                                .child(if line_text.is_empty() {
                                     SharedString::from(" ")
                                 } else {
-                                    SharedString::from(line.to_string())
+                                    SharedString::from(line_text)
                                 })
                         )
                 }))
