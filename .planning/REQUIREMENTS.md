@@ -117,35 +117,36 @@
 
 ## Traceability
 
-*Filled by roadmap: maps requirements to phases*
+*Updated by roadmap: 2026-01-27*
 
-| Requirement | Phase | Plan |
-|-------------|-------|------|
-| EDIT-01 | — | — |
-| EDIT-02 | — | — |
-| EDIT-03 | — | — |
-| EDIT-04 | — | — |
-| FILE-01 | — | — |
-| FILE-02 | — | — |
-| FILE-03 | — | — |
-| FILE-04 | — | — |
-| LSP-01 | — | — |
-| LSP-02 | — | — |
-| LSP-03 | — | — |
-| LSP-04 | — | — |
-| LSP-05 | — | — |
-| VIS-01 | — | — |
-| VIS-02 | — | — |
-| VIS-03 | — | — |
-| VIS-04 | — | — |
-| UI-01 | — | — |
-| UI-02 | — | — |
-| UI-03 | — | — |
-| UI-04 | — | — |
-| INFRA-01 | — | — |
-| INFRA-02 | — | — |
-| INFRA-03 | — | — |
-| INFRA-04 | — | — |
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| INFRA-01 | Phase 1: Foundation Validation | Pending |
+| VIS-02 | Phase 1: Foundation Validation | Pending |
+| EDIT-01 | Phase 2: Core Text Editing | Pending |
+| EDIT-02 | Phase 2: Core Text Editing | Pending |
+| VIS-03 | Phase 2: Core Text Editing | Pending |
+| EDIT-03 | Phase 3: Edit Operations | Pending |
+| EDIT-04 | Phase 3: Edit Operations | Pending |
+| FILE-01 | Phase 1 + Phase 4: Foundation + File Management | Pending |
+| FILE-02 | Phase 4: File Management | Pending |
+| FILE-03 | Phase 4: File Management | Pending |
+| FILE-04 | Phase 4: File Management | Pending |
+| VIS-01 | Phase 5: Syntax Highlighting | Pending |
+| VIS-04 | Phase 5: Syntax Highlighting | Pending |
+| LSP-01 | Phase 6: LSP Foundation | Pending |
+| LSP-02 | Phase 6: LSP Foundation | Pending |
+| INFRA-02 | Phase 6: LSP Foundation | Pending |
+| INFRA-03 | Phase 6: LSP Foundation | Pending |
+| INFRA-04 | Phase 6: LSP Foundation | Pending |
+| LSP-03 | Phase 7: LSP Interaction | Pending |
+| LSP-04 | Phase 7: LSP Interaction | Pending |
+| LSP-05 | Phase 7: LSP Interaction | Pending |
+| UI-01 | Phase 8: UI Completion | Pending |
+| UI-02 | Phase 8: UI Completion | Pending |
+| UI-03 | Phase 8: UI Completion | Pending |
+| UI-04 | Phase 8: UI Completion | Pending |
 
 ---
 *Requirements defined: 2026-01-27*
+*Traceability updated: 2026-01-27*
