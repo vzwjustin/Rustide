@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-01-27)
 
 **Core value:** Architecturally sound and extensible IDE with clean crate boundaries, async-first design, and GPU-accelerated rendering that handles real codebases without lag
-**Current focus:** Phase 1 - Foundation Validation
+**Current focus:** Phase 2 - Core Text Editing (Phase 1 complete)
 
 ## Current Position
 

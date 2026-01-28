@@ -12,7 +12,7 @@ Rustide is a brownfield IDE with strong scaffolding (9-crate workspace, GPUI, tr
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation Validation** - Wire EditorPane to real Documents with async loading and virtual scrolling
+- [x] **Phase 1: Foundation Validation** - Wire EditorPane to real Documents with async loading and virtual scrolling
 - [ ] **Phase 2: Core Text Editing** - Text input, cursor navigation, selection, and current line highlight
 - [ ] **Phase 3: Edit Operations** - Clipboard integration and undo/redo UI wiring
 - [ ] **Phase 4: File Management** - Save, close, tab switching with dirty state handling
@@ -32,14 +32,14 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Opening a 100K+ line file does not freeze the UI (async loading works)
   3. Scrolling through a 100K+ line file renders smoothly (virtual scrolling renders only visible lines)
   4. EditorPane displays actual file content from Document objects (not placeholder strings)
-**Plans**: TBD
+**Plans**: 5 plans in 4 waves
 
 Plans:
-- [ ] 01-01: Build validation and macOS launch
-- [ ] 01-02: Wire EditorPane to editor_core Document
-- [ ] 01-03: Implement async file loading with tokio
-- [ ] 01-04: Implement virtual scrolling viewport
-- [ ] 01-05: Large file integration testing
+- [ ] 01-01-PLAN.md - Build validation and macOS launch (Wave 1)
+- [ ] 01-02-PLAN.md - Wire EditorPane to editor_core Document (Wave 2)
+- [ ] 01-03-PLAN.md - Implement async file loading with cx.spawn (Wave 3)
+- [ ] 01-04-PLAN.md - Implement virtual scrolling with uniform_list (Wave 3)
+- [ ] 01-05-PLAN.md - Large file integration testing (Wave 4)
 
 **Addresses Pitfalls:** P5 (blocking I/O), P12 (no virtual scrolling)
 
@@ -267,7 +267,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation Validation | 0/5 | Not started | - |
+| 1. Foundation Validation | 5/5 | ✓ Complete | 2026-01-28 |
 | 2. Core Text Editing | 0/6 | Not started | - |
 | 3. Edit Operations | 0/3 | Not started | - |
 | 4. File Management | 0/5 | Not started | - |
@@ -281,4 +281,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 ---
 *Roadmap created: 2026-01-27*
+*Phase 1 planned: 2026-01-27*
 *Depth: Comprehensive (8 phases, 40 plans)*
