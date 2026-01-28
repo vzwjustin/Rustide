@@ -3,9 +3,9 @@
 //! Manages multiple open files in a tabbed interface.
 
 use gpui::{
-    div, prelude::*, px, uniform_list, App, Entity, FocusHandle, Focusable,
+    div, prelude::*, px, uniform_list, App, AsyncApp, Entity, FocusHandle, Focusable,
     InteractiveElement, IntoElement, ParentElement, SharedString,
-    Styled, UniformListScrollHandle, Window,
+    Styled, UniformListScrollHandle, WeakEntity, Window,
 };
 use std::path::PathBuf;
 
@@ -71,7 +71,11 @@ impl EditorPane {
         }
     }
 
-    /// Open a file in a new tab
+    /// Open a file in a new tab (async loading)
+    ///
+    /// Uses cx.spawn and background_executor to load files without blocking the UI.
+    /// The tab is created immediately in a loading state, then populated when
+    /// the background file read completes.
     pub fn open_file(&mut self, path: PathBuf, cx: &mut Context<Self>) {
         // Check if file is already open
         if let Some(idx) = self.tabs.iter().position(|t| t.path == path) {
@@ -80,22 +84,65 @@ impl EditorPane {
             return;
         }
 
-        // Create document entity with synchronous load
-        // Note: Async loading will be added in plan 01-03
-        let document = cx.new(|_| {
-            match Document::open(&path) {
-                Ok(doc) => doc,
-                Err(e) => {
-                    tracing::error!("Failed to open file {:?}: {}", path, e);
-                    Document::new() // Empty document on error
-                }
-            }
-        });
+        // Create empty document entity (placeholder during loading)
+        let document = cx.new(|_| Document::new());
 
-        let tab = EditorTab::new(path.clone(), document);
+        // Create tab in loading state
+        let tab = EditorTab {
+            document: document.clone(),
+            path: path.clone(),
+            name: path
+                .file_name()
+                .map(|n| n.to_string_lossy().to_string())
+                .unwrap_or_else(|| "untitled".to_string()),
+            is_modified: false,
+            cursor: (1, 1),
+            is_loading: true, // Start in loading state
+        };
+
         self.tabs.push(tab);
-        self.active_tab = Some(self.tabs.len() - 1);
-        cx.notify();
+        let tab_index = self.tabs.len() - 1;
+        self.active_tab = Some(tab_index);
+        cx.notify(); // Show loading state immediately
+
+        // Spawn async loading task using GPUI's async executor
+        cx.spawn(async move |this: WeakEntity<EditorPane>, cx: &mut AsyncApp| {
+            // Read file on background thread (non-blocking)
+            let result: Result<String, std::io::Error> = cx
+                .background_executor()
+                .spawn(async move { tokio::fs::read_to_string(&path).await })
+                .await;
+
+            // Update on main thread
+            let _ = this.update(cx, |pane, cx| {
+                match result {
+                    Ok(content) => {
+                        // Update document with loaded content
+                        document.update(cx, |doc, _| {
+                            *doc = Document::from_text(&content);
+                        });
+
+                        // Mark loading complete
+                        if let Some(tab) = pane.tabs.get_mut(tab_index) {
+                            tab.is_loading = false;
+                        }
+                        tracing::info!(
+                            "File loaded: {} lines",
+                            document.read(cx).line_count()
+                        );
+                    }
+                    Err(e) => {
+                        tracing::error!("Failed to load file: {}", e);
+                        // Mark loading complete even on error (shows empty document)
+                        if let Some(tab) = pane.tabs.get_mut(tab_index) {
+                            tab.is_loading = false;
+                        }
+                    }
+                }
+                cx.notify();
+            });
+        })
+        .detach();
     }
 
     /// Close a tab by index
@@ -189,7 +236,36 @@ impl EditorPane {
             )
     }
 
-    /// Render the editor content area
+    /// Render a single line element for uniform_list
+    fn render_line(line_idx: usize, line_text: &str, theme: &crate::theme::Theme) -> impl IntoElement {
+        div()
+            .h(px(LINE_HEIGHT))
+            .flex()
+            .items_center()
+            .child(
+                div()
+                    .w(px(48.0))
+                    .text_right()
+                    .pr(px(12.0))
+                    .text_color(theme.text.line_number)
+                    .child(SharedString::from(format!("{}", line_idx + 1)))
+            )
+            .child(
+                div()
+                    .flex_1()
+                    .text_color(theme.text.primary)
+                    .child(if line_text.is_empty() {
+                        SharedString::from(" ")
+                    } else {
+                        SharedString::from(line_text.to_string())
+                    })
+            )
+    }
+
+    /// Render the editor content area with virtual scrolling
+    ///
+    /// Uses uniform_list for O(visible) rendering complexity instead of O(total).
+    /// Only visible lines + buffer are rendered, enabling smooth scrolling of 100K+ line files.
     fn render_editor_content(&self, cx: &Context<Self>) -> impl IntoElement {
         let theme = current_theme();
 
@@ -210,43 +286,34 @@ impl EditorPane {
             // Read line count from Document entity
             let line_count = tab.document.read(cx).line_count();
             let document = tab.document.clone();
+            let scroll_handle = self.scroll_handle.clone();
 
+            // Use uniform_list for virtual scrolling - only renders visible lines
             div()
                 .id("editor-content")
                 .flex_1()
-                .overflow_y_scroll()
+                .overflow_hidden() // Required for uniform_list to work properly
                 .bg(theme.background.editor)
-                .p(px(8.0))
                 .font_family(theme.fonts.mono_family.clone())
                 .text_size(px(theme.fonts.mono_size))
-                .children((0..line_count).map(|i| {
-                    // Read each line from Document
-                    let line_text = document
-                        .read(cx)
-                        .line(i)
-                        .unwrap_or_default();
-
-                    div()
-                        .flex()
-                        .child(
-                            div()
-                                .w(px(40.0))
-                                .text_right()
-                                .pr(px(12.0))
-                                .text_color(theme.text.line_number)
-                                .child(SharedString::from(format!("{}", i + 1)))
-                        )
-                        .child(
-                            div()
-                                .flex_1()
-                                .text_color(theme.text.primary)
-                                .child(if line_text.is_empty() {
-                                    SharedString::from(" ")
-                                } else {
-                                    SharedString::from(line_text)
+                .child(
+                    uniform_list(
+                        "editor-lines",
+                        line_count,
+                        move |visible_range, _window, cx| {
+                            let doc = document.read(cx);
+                            let theme = current_theme();
+                            visible_range
+                                .map(|line_idx| {
+                                    let line_text = doc.line(line_idx).unwrap_or_default();
+                                    Self::render_line(line_idx, &line_text, &theme)
                                 })
-                        )
-                }))
+                                .collect()
+                        },
+                    )
+                    .track_scroll(scroll_handle)
+                    .flex_1()
+                )
         } else {
             div()
                 .id("empty-editor")
